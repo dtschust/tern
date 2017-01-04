@@ -187,6 +187,8 @@ let raw = String.raw`\n`
 
 // Default arguments
 Array.of(1, 2, 3, 4).find(x => x % 3 == 0)
+
+TS.mymath.onStart('bar', 'baz', 'bazz');
 </pre>
 
 <pre id="list.js">
@@ -218,6 +220,16 @@ export class List {
 export const PI = 3
 
 export const halve = x => x / 2
+
+TS.registerModule('mymath', {
+  onStart: function() {
+    console.log('foo');
+  },
+  onEnd: function() {
+    console.log('bar');
+  }
+})
+
 </pre>
 
 </project>

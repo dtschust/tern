@@ -12,7 +12,10 @@
   function connectModule(file, out) {
     var modules = infer.cx().parent.mod.modules
     var outObj = null
-    function exp(prop, type, originNode) {
+    function exp(prop, type, originNode, drewfixme) {
+      if (drewfixme) {
+        debugger;
+      }
       if (!outObj) {
         outObj = new infer.Obj(true)
         outObj.origin = file.name
@@ -25,6 +28,38 @@
     }
 
     walk.simple(file.ast, {
+      CallExpression: function(node) {
+        var callee = node.callee
+        if (callee && callee.object && callee.object.name === 'TS' && callee.property && callee.property.name && callee.property.name === 'registerModule') {
+          console.log(node);
+          console.log(file);
+          node.arguments[1].properties.forEach(function (property) {
+            exp(property.key.name, file.scope.getProp(property.key.name), property.key, true)
+          });
+          // exp('onStart', file.scope.getProp('onStart'), cur.id)
+          return;
+        }
+
+        if (callee && callee.object && callee.object.object && callee.object.object.name === 'TS' && callee.property && callee.property.type === 'Identifier') {
+          debugger;
+          console.log(callee.object.object.name + '.' + callee.object.property.name + '.' + callee.object.object.name + '()');
+          var input = modules.resolveModule('./' + callee.object.property.name, file.name)
+          // for (var i = 0; i < node.specifiers.length; i++) {
+          // var spec = node.specifiers[i]
+          var aval = file.scope.getProp(callee.object.property.name)
+          debugger;
+          input.propagate(aval);
+          // if (spec.type == "ImportNamespaceSpecifier") {
+          //   input.propagate(aval)
+          // } else if (spec.type == "ImportDefaultSpecifier") {
+          //   input.getProp("default").propagate(aval)
+          //   input.propagate(aval, WG_IMPORT_DEFAULT_FALLBACK)
+          // } else {
+          //   input.getProp(spec.imported.name).propagate(aval)
+          // }
+          // }
+        }
+      },
       ImportDeclaration: function(node) {
         var input = modules.resolveModule(node.source.value, file.name)
         for (var i = 0; i < node.specifiers.length; i++) {
@@ -100,6 +135,14 @@
     } else if (node.type == "ImportDeclaration" &&
                /^import\s+\{\s*([\w$]+\s*,\s*)*$/.test(node.sourceFile.text.slice(node.start, pos))) {
       return {name: node.source.value, prop: ""}
+    } else if (node.type == "MemberExpression") {
+      if (node.property.name == "mymath") {
+        debugger;
+        return {
+          name: "./mymath",
+          prop: "halve"
+        }
+      }
     }
   }
 
