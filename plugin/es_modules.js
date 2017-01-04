@@ -34,13 +34,10 @@
           console.log(node);
           console.log(file);
           node.arguments[1].properties.forEach(function (property) {
-            debugger;
             exp(property.key.name, file.scope.getProp(property.key.name), property.key, true)
           });
-          // exp('onStart', file.scope.getProp('onStart'), cur.id)
           return;
         }
-
         if (callee && callee.object && callee.object.object && callee.object.object.name === 'TS' && callee.property && callee.property.type === 'Identifier') {
           debugger;
           console.log(callee.object.object.name + '.' + callee.object.property.name + '.' + callee.object.object.name + '()');
@@ -137,13 +134,13 @@
                /^import\s+\{\s*([\w$]+\s*,\s*)*$/.test(node.sourceFile.text.slice(node.start, pos))) {
       return {name: node.source.value, prop: ""}
     } else if (node.type == "MemberExpression") {
-      if (node.property.name == "mymath") {
-        debugger;
-        return {
-          name: "./mymath",
-          prop: "halve"
-        }
-      }
+      // if (node.property.name == "mymath") {
+      //   debugger;
+      //   return {
+      //     name: "./mymath",
+      //     prop: "halve"
+      //   }
+      // }
     }
   }
 
