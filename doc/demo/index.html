@@ -163,7 +163,7 @@ define(function() {
 
 <project id="ES6"
          data-plugins="es_modules doc_comments complete_strings"
-         data-libs="ecmascript">
+         data-libs="ecmascript browser">
 <pre id="index.js">
 // Tern can do ECMAScript 6 (2015) too!
 
@@ -174,6 +174,12 @@ define(function() {
 import {List} from "./list"
 
 import * as myMath from "./mymath"
+
+window.foo = function () {
+  console.log('hi');
+}
+
+window.foo();
 
 const l = List.of(3, 4, 5)
 for (let elt of l.map(x => x * 2)) {
@@ -220,6 +226,8 @@ export class List {
 export const PI = 3
 
 export const halve = x => x / 2
+
+window.foo();
 
 TS.registerModule('mymath', {
   onStart: function() {

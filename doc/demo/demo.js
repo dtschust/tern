@@ -180,7 +180,6 @@ function initProject(name, c) {
       place.textContent = ""
 
       if (project) project.server.destroy()
-
       project = new Project(name, place, {
         defs: defs,
         plugins: plugins
