@@ -34,6 +34,7 @@
           console.log(node);
           console.log(file);
           node.arguments[1].properties.forEach(function (property) {
+            debugger;
             exp(property.key.name, file.scope.getProp(property.key.name), property.key, true)
           });
           // exp('onStart', file.scope.getProp('onStart'), cur.id)
